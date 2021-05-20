@@ -60,7 +60,17 @@ public class ElasticSearchServiveApplication {
 			//String email = "linetski@gmail.com";
 			String id = resultList.get(0).getId();
 			logger.info("LostPet id = " + id);
-			sendEmail("LostPet card", "http://localhost:3000/main_page/lost/card/"+id, email);
+			StringBuilder sb = new StringBuilder();
+			sb.append("Hey!\n"
+					+ "We received information about you found a pet, and we found a similar one among the lost.\n"
+					+ "Follow this link: \n");
+			sb.append("http://localhost:3000/main_page/lost/card/"+id);
+			sb.append("\nBest regards, site \"ProPets\"\n"
+					+ "\n"
+					+ "_\n"
+					+ "This is an automatic letter.\n"
+					+ "Please don't answer.");
+			sendEmail("We received information about you found a pet",sb.toString(), email);
 		}
 	}
 	
@@ -74,7 +84,17 @@ public class ElasticSearchServiveApplication {
 			//String email = "linetski@gmail.com";
 			String id = resultList.get(0).getId();
 			logger.info("FoundPet id = " + id);
-			sendEmail("you pet found", "http://localhost:3000/main_page/found/card/"+id, email);
+			StringBuilder sb = new StringBuilder();
+			sb.append("Hello!\n"
+					+ "We received information about your lost pet and found a similar one among those found.\n"
+					+ "Maybe you are looking for it: \n");
+			sb.append("http://localhost:3000/main_page/found/card/"+id);
+			sb.append("\nBest regards, site \"ProPets\"\n"
+					+ "\n"
+					+ "_\n"
+					+ "This is an automatic letter.\n"
+					+ "Please, don't answer.");
+			sendEmail("We received information about your lost pet",sb.toString() , email);
 		}
 			
 
