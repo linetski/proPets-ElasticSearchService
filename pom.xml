@@ -11,8 +11,8 @@
 	<groupId>com.example</groupId>
 	<artifactId>ElasticSearchServive</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ElasticDemo</name>
-	<description>Demo project for Spring Boot</description>
+	<name>ElasticSearchServive</name>
+	<description>ElasticSearchServive</description>
 
 	<properties>
 		<java.version>1.8</java.version>

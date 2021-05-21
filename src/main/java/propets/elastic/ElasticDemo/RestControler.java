@@ -17,8 +17,11 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
 import propets.model.FoundPet;
@@ -63,6 +66,18 @@ public class RestControler {
 		return "";
 	}
 
+	@GetMapping("/clearFoundById/{id}")
+	public String clearFoundById(@PathVariable String id) {
+		foundPetRepository.deleteById(id);		
+		return "";
+	}
+	
+	@GetMapping("/clearLostById/{id}")
+	public String clearLostById(@PathVariable String id) {
+		lostPetRepository.deleteById(id);		
+		return "";
+	}
+	
 	public void find() {
 		ArrayList<LostPet> resultList = new ArrayList<LostPet>();
 		Optional<LostPet> lostPet = lostPetRepository.findById("609a89daac835e57c5178759");
@@ -99,15 +114,21 @@ public class RestControler {
 		Item[] items = new Item[1];
 		Item i = new Item("lostpets","_doc",lostPet.getId());
 		items[0]=i;
-		String[] fields = new String[8];
-		fields[0]="type";
-		fields[1]="color";
-		fields[2]="location";
-		fields[3]="breed";
-		fields[4]="tags";
-		fields[5]="sex";
-		fields[6]="description";
-		fields[7]="distinction";
+		String[] fields;
+		if(lostPet.getTags().length()>10) {
+			fields = new String[1];
+			fields[0] = "tags";
+		}else {
+			fields = new String[8];
+			fields[0]="type";
+			fields[1]="color";
+			fields[2]="location";
+			fields[3]="breed";
+			fields[4]="tags";
+			fields[5]="sex";
+			fields[6]="description";
+			fields[7]="distinction";
+		}
 		
 		MoreLikeThisQueryBuilder moreLikeThisQuery = QueryBuilders.moreLikeThisQuery(fields,null,items);
 		
@@ -132,15 +153,24 @@ public class RestControler {
 		Item[] items = new Item[1];
 		Item i = new Item("foundpets","_doc",foundPet.getId());
 		items[0]=i;
-		String[] fields = new String[8];
-		fields[0]="type";
-		fields[1]="color";
-		fields[2]="location";
-		fields[3]="breed";
-		fields[4]="tags";
-		fields[5]="sex";
-		fields[6]="description";
-		fields[7]="distinction";
+		String[] fields;
+		if(foundPet.getTags().length()>10) {
+			fields = new String[1];
+			fields[0] = "tags";
+		}else {
+			fields = new String[8];
+			fields[0]="type";
+			fields[1]="color";
+			fields[2]="location";
+			fields[3]="breed";
+			fields[4]="tags";
+			fields[5]="sex";
+			fields[6]="description";
+			fields[7]="distinction";
+		}
+		
+		
+		
 		MoreLikeThisQueryBuilder moreLikeThisQuery = QueryBuilders.moreLikeThisQuery(fields,null,items);
 		
 		NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();

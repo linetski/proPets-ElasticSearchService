@@ -56,8 +56,8 @@ public class ElasticSearchServiveApplication {
 		foundPetRepository.save(foundPet);
 		ArrayList<LostPet> resultList = restControler.find(foundPet);
 		if(resultList.size()>0) {
-			String email = foundPet.getEmail();
-			//String email = "linetski@gmail.com";
+			//String email = foundPet.getEmail();
+			String email = "olhali4265@gmail.com";
 			String id = resultList.get(0).getId();
 			logger.info("LostPet id = " + id);
 			StringBuilder sb = new StringBuilder();
@@ -65,9 +65,9 @@ public class ElasticSearchServiveApplication {
 					+ "We received information about you found a pet, and we found a similar one among the lost.\n"
 					+ "Follow this link: \n");
 			sb.append("http://localhost:3000/main_page/lost/card/"+id);
-			sb.append("\nBest regards, site \"ProPets\"\n"
-					+ "\n"
-					+ "_\n"
+			sb.append("\nBest regards, site \"ProPets\""
+					+ "\n\n\n"
+					+ "___\n"
 					+ "This is an automatic letter.\n"
 					+ "Please don't answer.");
 			sendEmail("We received information about you found a pet",sb.toString(), email);
@@ -80,8 +80,8 @@ public class ElasticSearchServiveApplication {
 		lostPetRepository.save(lostPet);
 		ArrayList<FoundPet> resultList = restControler.find(lostPet);
 		if(resultList.size()>0) {
-			String email = lostPet.getEmail();
-			//String email = "linetski@gmail.com";
+			//String email = lostPet.getEmail();
+			String email = "olhali4265@gmail.com";
 			String id = resultList.get(0).getId();
 			logger.info("FoundPet id = " + id);
 			StringBuilder sb = new StringBuilder();
