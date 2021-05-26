@@ -1,0 +1,16 @@
+server:
+  port: ${PORT:5000}
+security:
+  user:
+    password: ${eureka.password}
+
+eureka:
+  instance:
+    instanceId: ${DOMAIN_NAME}
+    nonSecurePort: 80
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname:localhost}:${server.port}/eureka/
+  password: ${EUREKA_USER_PASSWORD:password}

@@ -1,4 +1,4 @@
-package propets.elastic.ElasticDemo;
+package propets.elastic;
 
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Autowired;

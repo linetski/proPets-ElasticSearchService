@@ -1,4 +1,4 @@
-package propets.elastic.ElasticDemo;
+package propets.elastic;
 
 import org.springframework.data.repository.CrudRepository;
 

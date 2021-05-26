@@ -1,4 +1,4 @@
-package propets.elastic.ElasticDemo;
+package propets.elastic;
 
 import java.util.Optional;
 
