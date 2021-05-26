@@ -5,12 +5,11 @@ security:
     password: ${eureka.password}
 
 eureka:
-  instance:
-    instanceId: ${DOMAIN_NAME}
-    nonSecurePort: 80
   client:
-    registerWithEureka: false
-    fetchRegistry: false
     serviceUrl:
-      defaultZone: http://${eureka.instance.hostname:localhost}:${server.port}/eureka/
-  password: ${EUREKA_USER_PASSWORD:password}
+      defaultZone: ${EUREKA_URI:http://localhost:5000}/eureka
+  
+  instance:
+      instanceId: ${DOMAIN_NAME:localhost}:${random.value}
+      hostname: ${DOMAIN_NAME}
+      nonSecurePort: 80
