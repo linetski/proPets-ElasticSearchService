@@ -11,5 +11,5 @@ eureka:
   
   instance:
       instanceId: ${DOMAIN_NAME:localhost}:${random.value}
-      hostname: ${DOMAIN_NAME}
+      hostname: ${DOMAIN_NAME:localhost}
       nonSecurePort: 80
