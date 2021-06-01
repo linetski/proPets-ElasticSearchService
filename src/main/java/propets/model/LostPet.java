@@ -9,7 +9,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import lombok.ToString;
 
-@Document(indexName = "${elasticSearchIndexLostPets}")
+@Document(indexName = "lostpets")
 @ToString
 public class LostPet {
 	
