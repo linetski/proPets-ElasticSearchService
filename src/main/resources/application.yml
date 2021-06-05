@@ -1,15 +1,8 @@
-server:
-  port: ${PORT:5000}
-security:
-  user:
-    password: ${eureka.password}
-
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${EUREKA_URI:http://localhost:5000}/eureka
+      defaultZone: ${EUREKA_URI:http://localhost:8761}/eureka
   
   instance:
       instanceId: ${DOMAIN_NAME:localhost}:${random.value}
       hostname: ${DOMAIN_NAME:localhost}
-      nonSecurePort: 80
