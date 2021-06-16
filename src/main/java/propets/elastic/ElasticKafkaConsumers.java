@@ -51,8 +51,8 @@ public class ElasticKafkaConsumers {
 		foundPetRepository.save(foundPet);
 		ArrayList<LostPet> resultList = elasticSearchService.find(foundPet);
 		if(resultList.size()>0) {
-			//String email = foundPet.getEmail();
-			String email = "olhali4265@gmail.com";
+			String email = foundPet.getEmail();
+			//String email = "olhali4265@gmail.com";
 			String id = resultList.get(0).getId();
 			logger.info("LostPet id = " + id);
 			StringBuilder sb = new StringBuilder();
@@ -75,8 +75,8 @@ public class ElasticKafkaConsumers {
 		lostPetRepository.save(lostPet);
 		ArrayList<FoundPet> resultList = elasticSearchService.find(lostPet);
 		if(resultList.size()>0) {
-			//String email = lostPet.getEmail();
-			String email = "olhali4265@gmail.com";
+			String email = lostPet.getEmail();
+			//String email = "olhali4265@gmail.com";
 			String id = resultList.get(0).getId();
 			logger.info("FoundPet id = " + id);
 			StringBuilder sb = new StringBuilder();
