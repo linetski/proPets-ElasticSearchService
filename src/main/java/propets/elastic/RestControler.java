@@ -25,12 +25,9 @@ public class RestControler {
 	@Autowired
 	LostPetRepository lostPetRepository;
 	
-	@Value("${user.role}")
-	private String role;
-	
-	@PostMapping("/produce")
+	@GetMapping("/produce")
 	public String produce() {
-		//elasticSearchService.find();		
+		elasticSearchService.find();		
 		return "";
 	}
 	
@@ -58,14 +55,4 @@ public class RestControler {
 		return "";
 	}
 	
-	@GetMapping("/test")
-	public String test() {	
-		return "test succesfully " + role;
-	}
-	
-	
-	
-	
-	
-
 }

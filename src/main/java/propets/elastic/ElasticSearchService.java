@@ -21,115 +21,92 @@ import propets.model.LostPet;
 
 @Service
 public class ElasticSearchService {
-	
-	@Autowired 
+
+	@Autowired
 	ElasticsearchOperations elasticsearchTemplate;
+
+	@Autowired
+	RestHighLevelClient highLevelClient;
 	
-	@Autowired 
-	RestHighLevelClient highLevelClient; 
-	
+	@Autowired
+	FoundPetRepository foundPetRepository;
+
 	public ArrayList<LostPet> find(FoundPet foundPet) {
 		ArrayList<LostPet> resultList = new ArrayList<LostPet>();
-		Item[] items = new Item[1];
-		Item i = new Item("foundpets","_doc",foundPet.getId());
-		items[0]=i;
-		String[] fields;
-		if(foundPet.getTags().length()>10) {
-			fields = new String[1];
-			fields[0] = "tags";
-		}else {
-			fields = new String[8];
-			fields[0]="type";
-			fields[1]="color";
-			fields[2]="location";
-			fields[3]="breed";
-			fields[4]="tags";
-			fields[5]="sex";
-			fields[6]="description";
-			fields[7]="distinction";
-		}
-		
-		
-		
-		MoreLikeThisQueryBuilder moreLikeThisQuery = QueryBuilders.moreLikeThisQuery(fields,null,items);
-		
+		StringBuilder builder = new StringBuilder();
+		builder.append(foundPet.getTags());
+		builder.append(" " + foundPet.getDescription());
+		builder.append(" " + foundPet.getType());
+		builder.append(" " + foundPet.getLocation());
+		builder.append(" " + foundPet.getDistinction());
+		builder.append(" " + foundPet.getLocation());
 		NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
-		nativeSearchQueryBuilder.withQuery(moreLikeThisQuery);
+		nativeSearchQueryBuilder.withQuery(QueryBuilders.simpleQueryStringQuery(builder.toString()));
+
 		NativeSearchQuery query = nativeSearchQueryBuilder.build();
-		//query.setMaxResults(2);
 		query.setSearchType(SearchType.DFS_QUERY_THEN_FETCH);
-		SearchHits<LostPet> lostPetNew = elasticsearchTemplate.search(query,LostPet.class);
+		SearchHits<LostPet> lostPetNew = elasticsearchTemplate.search(query, LostPet.class);
 		for (SearchHit hit : lostPetNew.getSearchHits()) {
-			if(((LostPet)hit.getContent()).getType().equals(foundPet.getType())) {
-				resultList.add((LostPet)hit.getContent());
+			if (((LostPet) hit.getContent()).getType().equals(foundPet.getType())) {
+				resultList.add((LostPet) hit.getContent());
 			}
 		}
 		return resultList;
 
-		
 	}
-	
+
 	public ArrayList<FoundPet> find(LostPet lostPet) {
 		ArrayList<FoundPet> resultList = new ArrayList<FoundPet>();
-		Item[] items = new Item[1];
-		Item i = new Item("lostpets","_doc",lostPet.getId());
-		items[0]=i;
-		String[] fields;
-		if(lostPet.getTags().length()>10) {
-			fields = new String[1];
-			fields[0] = "tags";
-		}else {
-			fields = new String[8];
-			fields[0]="type";
-			fields[1]="color";
-			fields[2]="location";
-			fields[3]="breed";
-			fields[4]="tags";
-			fields[5]="sex";
-			fields[6]="description";
-			fields[7]="distinction";
-		}
-		
-		MoreLikeThisQueryBuilder moreLikeThisQuery = QueryBuilders.moreLikeThisQuery(fields,null,items);
-		
+		StringBuilder builder = new StringBuilder();
+		builder.append(lostPet.getTags());
+		builder.append(" " + lostPet.getDescription());
+		builder.append(" " + lostPet.getType());
+		builder.append(" " + lostPet.getLocation());
+		builder.append(" " + lostPet.getDistinction());
+		builder.append(" " + lostPet.getColor());
+
 		NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
-		nativeSearchQueryBuilder.withQuery(moreLikeThisQuery);
+		nativeSearchQueryBuilder.withQuery(QueryBuilders.simpleQueryStringQuery(builder.toString()));
+
 		NativeSearchQuery query = nativeSearchQueryBuilder.build();
 		query.setSearchType(SearchType.DFS_QUERY_THEN_FETCH);
-		SearchHits<FoundPet> lostPetNew = elasticsearchTemplate.search(query,FoundPet.class);
-		for (SearchHit hit : lostPetNew.getSearchHits()) {
-			if(((FoundPet)hit.getContent()).getType().equals(lostPet.getType())) {
-				resultList.add((FoundPet)hit.getContent());
+		SearchHits<FoundPet> foundPetHits = elasticsearchTemplate.search(query, FoundPet.class);
+		for (SearchHit hit : foundPetHits.getSearchHits()) {
+			if (((FoundPet) hit.getContent()).getType().equals(lostPet.getType())) {
+				resultList.add((FoundPet) hit.getContent());
 			}
 		}
 		return resultList;
 
-		
 	}
-	
-	/*
-	 * public void find() { ArrayList<LostPet> resultList = new
-	 * ArrayList<LostPet>(); Optional<LostPet> lostPet =
-	 * lostPetRepository.findById("609a89daac835e57c5178759"); Item[] items = new
-	 * Item[1]; Item i = new Item("lostpets","_doc","609a89daac835e57c5178759");
-	 * items[0]=i; String[] fields = new String[5]; fields[0]="type";
-	 * fields[1]="color"; fields[2]="location"; fields[3]="breed"; fields[4]="tags";
-	 * 
-	 * MoreLikeThisQueryBuilder moreLikeThisQuery =
-	 * QueryBuilders.moreLikeThisQuery(fields,null,items);
-	 * 
-	 * NativeSearchQueryBuilder nativeSearchQueryBuilder = new
-	 * NativeSearchQueryBuilder();
-	 * nativeSearchQueryBuilder.withQuery(moreLikeThisQuery); NativeSearchQuery
-	 * query = nativeSearchQueryBuilder.build();
-	 * query.setSearchType(SearchType.DFS_QUERY_THEN_FETCH); SearchHits<LostPet>
-	 * lostPetNew = elasticsearchTemplate.search(query,LostPet.class); for
-	 * (SearchHit hit : lostPetNew.getSearchHits()) {
-	 * if(((LostPet)hit.getContent()).getType().equals(lostPet.get().getType())) {
-	 * resultList.add((LostPet)hit.getContent()); } } return;
-	 * 
-	 * 
-	 * }
-	 */
-	
+
+	// for testing purposes and tunning in debug
+	public void find() {
+		ArrayList<LostPet> resultList = new ArrayList<LostPet>();
+		Optional<FoundPet> foundPet = foundPetRepository.findById("60cce3a5caad731e0a228cb0");	
+
+		StringBuilder builder = new StringBuilder();
+		builder.append(foundPet.get().getTags());
+		builder.append(" " + foundPet.get().getDescription());
+		builder.append(" " + foundPet.get().getType());
+		builder.append(" " + foundPet.get().getLocation());
+		builder.append(" " + foundPet.get().getDistinction());
+		builder.append(" " + foundPet.get().getColor());
+
+		NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder();
+		nativeSearchQueryBuilder.withQuery(QueryBuilders.simpleQueryStringQuery(builder.toString()));
+
+		NativeSearchQuery query = nativeSearchQueryBuilder.build();
+		query.setSearchType(SearchType.DFS_QUERY_THEN_FETCH);
+		SearchHits<LostPet> lostPetNew = elasticsearchTemplate.search(query, LostPet.class);
+		for (SearchHit hit : lostPetNew.getSearchHits()) {
+			if (((LostPet) hit.getContent()).getType().equals(foundPet.get().getType())) {
+				resultList.add((LostPet) hit.getContent());
+			}
+		}
+		return;
+
+	}
+	 
+
 }
