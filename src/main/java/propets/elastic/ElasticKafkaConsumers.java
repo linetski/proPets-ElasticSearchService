@@ -59,7 +59,7 @@ public class ElasticKafkaConsumers {
 			sb.append("Hey!\n"
 					+ "We received information about you found a pet, and we found a similar one among the lost.\n"
 					+ "Follow this link: \n");
-			sb.append("http://localhost:3000/main_page/lost/card/"+id);
+			sb.append("https://84.228.171.29:3082/main_page/lost/card/"+id);
 			sb.append("\nBest regards, site \"ProPets\""
 					+ "\n\n\n"
 					+ "___\n"
@@ -83,7 +83,7 @@ public class ElasticKafkaConsumers {
 			sb.append("Hello!\n"
 					+ "We received information about your lost pet and found a similar one among those found.\n"
 					+ "Maybe you are looking for it: \n");
-			sb.append("http://localhost:3000/main_page/found/card/"+id);
+			sb.append("https://84.228.171.29:3082/main_page/found/card/"+id);
 			sb.append("\nBest regards, site \"ProPets\"\n"
 					+ "\n"
 					+ "_\n"
