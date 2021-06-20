@@ -1,4 +1,4 @@
-package propets.elastic;
+package propets.elastic.Repositories;
 
 import java.util.Optional;
 

@@ -16,6 +16,7 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 
+import propets.elastic.Repositories.FoundPetRepository;
 import propets.model.FoundPet;
 import propets.model.LostPet;
 

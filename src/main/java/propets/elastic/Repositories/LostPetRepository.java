@@ -1,4 +1,4 @@
-package propets.elastic;
+package propets.elastic.Repositories;
 
 import org.springframework.data.repository.CrudRepository;
 

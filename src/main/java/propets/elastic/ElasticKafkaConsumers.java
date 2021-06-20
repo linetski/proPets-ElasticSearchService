@@ -12,6 +12,9 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
+import propets.elastic.Repositories.FoundPetRepository;
+import propets.elastic.Repositories.LostPetRepository;
+import propets.elastic.RestClient.RestControler;
 import propets.model.Email;
 import propets.model.FoundPet;
 import propets.model.LostPet;
