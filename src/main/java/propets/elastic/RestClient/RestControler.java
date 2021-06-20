@@ -13,7 +13,7 @@ import propets.elastic.ElasticSearchService;
 import propets.elastic.Repositories.FoundPetRepository;
 import propets.elastic.Repositories.LostPetRepository;
 
-
+// for testing purposes and tunning in debug
 @RefreshScope
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -29,11 +29,10 @@ public class RestControler {
 	@Autowired
 	LostPetRepository lostPetRepository;
 	
-	@GetMapping("/produce")
-	public String produce() {
-		elasticSearchService.find();		
-		return "";
-	}
+	/*
+	 * @GetMapping("/find") public String produce() {
+	 * elasticSearchService.find(); return ""; }
+	 */
 	
 	@PostMapping("/clearLost")
 	public String clearAllLost() {
