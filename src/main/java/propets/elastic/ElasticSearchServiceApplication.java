@@ -7,10 +7,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-public class ElasticSearchServiveApplication {
+public class ElasticSearchServiceApplication {
 	
 	public static void main(String[] args) {
-		SpringApplication.run(ElasticSearchServiveApplication.class, args);
+		SpringApplication.run(ElasticSearchServiceApplication.class, args);
 	}
 
 	/*

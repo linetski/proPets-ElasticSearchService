@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
+/*import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;*/
 import org.springframework.stereotype.Component;
 
 import propets.elastic.Repositories.FoundPetRepository;
@@ -40,15 +42,24 @@ public class ElasticKafkaConsumers {
 	@Autowired
 	RestControler restControler;
 
-	@Autowired
-    private KafkaTemplate<String, Email> emailKafkaTemplate;
+	//@Autowired
+    //private KafkaTemplate<String, Email> emailKafkaTemplate;
 	
 	@Autowired
 	ElasticSearchService elasticSearchService;
 	
+	@Autowired
+	private AmqpTemplate rabbitTemplate;
+	
+	@Value("${rabbitmq.exchange.email}")
+	private String exchange;
+	
+	@Value("${rabbitmq.routingkey.email}")
+	private String routingkey;	
 	
 	
-	@KafkaListener(topics = "${foundPetTopic}", groupId = "foo")
+	//@KafkaListener(topics = "${foundPetTopic}", groupId = "foo")
+	@RabbitListener(queues = "${rabbitmq.queue.foundpet}")
 	public void consumeFound(FoundPet foundPet) {
 		logger.info(foundPet.toString());
 		foundPetRepository.save(foundPet);
@@ -72,7 +83,8 @@ public class ElasticKafkaConsumers {
 		}
 	}
 	
-	@KafkaListener(topics = "${lostPetTopic}", groupId = "foo")
+	//@KafkaListener(topics = "${lostPetTopic}", groupId = "foo")
+	@RabbitListener(queues = "${rabbitmq.queue.lostpet}")
 	public void consumeLost(LostPet lostPet) {
 		logger.info(lostPet.toString());
 		lostPetRepository.save(lostPet);
@@ -102,6 +114,7 @@ public class ElasticKafkaConsumers {
 	    email.setSubject(subject);
 	    email.setBody(body);
 	    email.setEmailAdress(emailAdress);
-	    emailKafkaTemplate.send(emailTopic,email);
+	    //emailKafkaTemplate.send(emailTopic,email);
+	    rabbitTemplate.convertAndSend(exchange, routingkey, email);
 	}
 }
